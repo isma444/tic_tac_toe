@@ -31,12 +31,13 @@ public class TicTacToe {
 
     public String[] getMoveFromPlayer(String[] numbers){
 
-        if(isNumeric(numbers[0]) && isNumeric(numbers[1])){
-
-
+        if (numbers.length  == 2){
+            for(String number : numbers){
+                if(Math.abs(Integer.parseInt(number)) < 4){
+                        
+                }
+            }
         }
-
-        return numbers;
     }
 
     public static boolean isNumeric(String string){
