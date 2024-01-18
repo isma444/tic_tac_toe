@@ -4,17 +4,22 @@ import java.util.Scanner;
 
 public class TicTacToe {
 
-    int size;
-    Cell[][] tabCell = new Cell[3][3];
+  private int size;
+  private Cell[][] tabCell = new Cell[3][3];
 
-    Player firstPlayer;
-    Player secondPlayer;
+   private Player firstPlayer ;
+   private Player secondPlayer;
+
+   public int getSize(){
+       return this.size;
+    }
 
     TicTacToe(int size) {
+
         this.size = size;
         this.tabCell = new Cell[size][size];
-        this.firstPlayer = new Player("X");
-        this.secondPlayer = new Player("O");
+        this.firstPlayer = new Player().chosePlayers( 1, this);
+        this.secondPlayer = new Player().chosePlayers( 2, this);
         for (Cell[] rowCell : this.tabCell) {
             for (int i = 0; i < rowCell.length; i++) {
                 rowCell[i] = new Cell();
@@ -67,17 +72,19 @@ public class TicTacToe {
 
     public int[] getMoveFromPlayer(Player player) {
 
-        int[] numbers = player.captureCell(); // appeller la method qui retourne les chiffre saisie
-        Cell chosenCell = this.tabCell[numbers[0]][numbers[1]];// recupere la cellule indiqué par les coordonnees
+
+       // TODO: check semantic
+        int[] numbers = player.chosenCoord(this); // appeller la method qui retourne les chiffre saisie
+
 
         while (!(numbers[0] < this.size) | !(numbers[1] < this.size)) { // verifie que les deux nombre ne soit pas plus grand que 3
             System.out.println("position incorrect ! position correct entre 0 et 2");
-            numbers = player.captureCell();
+            numbers = player.chosenCoord(this);
         }
-
+        Cell chosenCell = this.tabCell[numbers[0]][numbers[1]];// recupere la cellule indiqué par les coordonnees
         while (!(chosenCell.getRepresentation().equals("|   "))) {
             System.out.println("case deja prise ! recommence");
-            numbers = player.captureCell();
+            numbers = player.chosenCoord(this);
             chosenCell = this.tabCell[numbers[0]][numbers[1]];
         }
 
@@ -100,12 +107,7 @@ public class TicTacToe {
      * @return boolean
      */
     public boolean isOver(Player player) {
-
-        if(this.checkRow(player)){
-            return true;
-        } else if (this.checkColumns(player)) {
-            return true;
-        } else if (this.checkDiagonal(player)) {
+        if(this.checkRow(player) | this.checkColumns(player) | this.checkDiagonal(player) ){
             return true;
         } else return checkTabCell();
     }
@@ -116,15 +118,15 @@ public class TicTacToe {
      * @return boolean
      */
     public boolean checkRow(Player player) {
-        int cellCount = 0;
-        for (int i = 0; i < this.size; i++) {
 
+        for (int i = 0; i < this.size; i++) {
+            int cellCount = 0;
             for (int j = 0; j < this.size; j++) {
                 if(Objects.equals(this.tabCell[i][j].getRepresentation(), player.getRepresentation())){
                     cellCount += 1;
                 }
             }
-            if(cellCount == this.size){
+            if (cellCount == this.size){
                 return true;
             }
         }
@@ -138,18 +140,18 @@ public class TicTacToe {
      */
     public boolean checkColumns(Player player) {
 
-        int cellCount = 0;
-
         for (int i = 0; i < this.size; i++) {
-
+            int cellCount = 0;
             for (int j = 0; j < this.size; j++) {
                 if(Objects.equals(this.tabCell[j][i].getRepresentation(), player.getRepresentation())){
                     cellCount += 1;
                 }
             }
-
+            if(cellCount == this.size){
+                return true;
+            }
         }
-        return cellCount == this.size;
+        return false;
     }
 
     /**
@@ -170,14 +172,20 @@ public class TicTacToe {
 
     public boolean checkDiagonal(Player player) {
 
-        int cellCount = 0;
+        int cellCount1 = 0;
+        int cellCount2 = 0;
 
         for (int i = 0; i < this.size; i++) {
 
             if(Objects.equals(this.tabCell[i][i].getRepresentation(), player.getRepresentation())){
-                cellCount += 1;
+                cellCount1 += 1;
             }
+            if(Objects.equals(this.tabCell[i][(Math.abs(i-(this.size-1)))].getRepresentation(), player.getRepresentation())){
+                cellCount2+=1;
+            }
+
         }
-        return cellCount == this.size;
+        return (cellCount1 == this.size | cellCount2 == this.size);
     }
+
 }

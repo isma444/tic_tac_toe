@@ -2,65 +2,27 @@ import com.sun.net.httpserver.Authenticator;
 
 import java.util.Scanner;
 
-public class Player {
+public class Player extends InteractionUtilisateur {
 
-
-    String representation  ;
+    protected TicTacToe game ;
+    private String representation ;
 
     public String getRepresentation(){
         return this.representation;
     }
 
-    Player(String symbole){
 
-        this.representation = "| "+ symbole +" ";
-    }
 
-    public int[] captureCell(){
+    public int[] chosenCoord(TicTacToe game){
 
         int[] coordonnees = new int[2];
 
-        coordonnees[0] = this.recoverInput("lignes");
-        coordonnees[1] = this.recoverInput("colonnes");
-//        System.out.println("entrez le chiffre des lignes");
-//        while(true){
-//            try {
-//                int coord1 = scanner.nextInt();
-//                coordonnees[1] = Math.abs(coord1);
-//                break;
-//            }catch (Exception e){
-//                System.out.println("il faut entrer un chiffre");
-//                scanner.next();
-//            }
-//        }
-
-//        System.out.println("entrez le chiffre des colonnes");
-//        while(true){
-//            try {
-//                int coord2 = scanner.nextInt();
-//                coordonnees[0] = Math.abs(coord2);
-//                break;
-//            }catch (Exception e){
-//                System.out.println("il faut entrer un chiffre");
-//                scanner.next();
-//            }
-//        }
+        coordonnees[0] = this.recoverInput("lignes", game);
+        coordonnees[1] = this.recoverInput("colonnes", game);
 
         return coordonnees;
     }
 
-    public int recoverInput(String axis){
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("entrez le chiffre des "+axis);
-        while(true){
-            try {
-                return scanner.nextInt();
 
-            }catch (Exception e){
-                System.out.println("il faut entrer un chiffre");
-                scanner.next();
-            }
-        }
-    }
 }
