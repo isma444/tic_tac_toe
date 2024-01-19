@@ -18,13 +18,12 @@ public class Player {
     }
 
 
-
     public int[] chosenCoord(TicTacToe game){
 
         int[] coordonnees = new int[2];
 
-        coordonnees[0] = new InteractionUtilisateur().recoverInput("lignes", game);
-        coordonnees[1] = new InteractionUtilisateur().recoverInput("colonnes", game);
+        coordonnees[0] = new InteractionUtilisateur().recoverInput("lignes");
+        coordonnees[1] = new InteractionUtilisateur().recoverInput("colonnes");
 
         return coordonnees;
     }

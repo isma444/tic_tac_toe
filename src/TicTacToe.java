@@ -1,19 +1,16 @@
 import java.util.Objects;
 
-public class TicTacToe {
+public class TicTacToe extends BordGame {
 
   private View view;
   private int size;
-  private Cell[][] tabCell = new Cell[3][3];
-  
+  private Cell[][] tabCell;
   private InteractionUtilisateur interaction;
   private Player firstPlayer ;
   private Player secondPlayer;
-
     public Cell[][] getTabCell() {
         return tabCell;
     }
-
     public int getSize(){
        return this.size;
     }
@@ -24,8 +21,8 @@ public class TicTacToe {
         this.tabCell = new Cell[size][size];
         this.view = new View();
         this.interaction = new InteractionUtilisateur();
-        this.firstPlayer = this.interaction.chosePlayers( 1, this);
-        this.secondPlayer = this.interaction.chosePlayers( 2, this);
+        this.firstPlayer = this.interaction.chosePlayers( 1);
+        this.secondPlayer = this.interaction.chosePlayers( 2);
         for (Cell[] rowCell : this.tabCell) {
             for (int i = 0; i < rowCell.length; i++) {
                 rowCell[i] = new Cell();
@@ -43,7 +40,7 @@ public class TicTacToe {
             player = this.switchPlayer(i);
             this.setOwner(player);
             this.display();
-            if(isOver(player)){
+            if(this.isOver(player)){
                 this.view.showMessage("fini");
                 break;
             }
@@ -66,10 +63,7 @@ public class TicTacToe {
 
     public int[] getMoveFromPlayer(Player player) {
 
-
-
         int[] numbers = player.chosenCoord(this); // appeller la method qui retourne les chiffre saisie
-
 
         while (!(numbers[0] < this.size) | !(numbers[1] < this.size)) { // verifie que les deux nombre ne soit pas plus grand que 3
             this.view.showMessage("position incorrect ! position correct entre 0 et 2");
@@ -77,7 +71,6 @@ public class TicTacToe {
         }
         Cell chosenCell = this.tabCell[numbers[0]][numbers[1]];// recupere la cellule indiqué par les coordonnees
         while (!(chosenCell.getRepresentation().equals("|   "))) {
-            this.view.showMessage("case deja prise ! recommence");
             this.view.showMessage("case deja prise ! recommence");
             numbers = player.chosenCoord(this);
             chosenCell = this.tabCell[numbers[0]][numbers[1]];
@@ -102,15 +95,16 @@ public class TicTacToe {
      * @return boolean
      */
     public boolean isOver(Player player) {
-        if(this.checkRow(player) | this.checkColumns(player) | this.checkDiagonal(player) ){
+        if(this.checkRow(player) || this.checkColumns(player) || this.checkDiagonal(player) ){
             this.view.showMessage(player.getName()+" win !");
             return true;
-        } else {
-            if(checkTabCell()){
+        }else {
+            if (isCompleted()) {
                 this.view.showMessage("Vous êtes tout les deux mauvais ...");
             }
-            return checkTabCell();
         }
+        return isCompleted();
+
     }
 
     /**
@@ -159,11 +153,11 @@ public class TicTacToe {
      * check if the tabCell
      * @return boolean
      */
-    public boolean checkTabCell(){
+    public boolean isCompleted(){
 
         for(Cell[] rowCell : this.tabCell){
             for(Cell cell : rowCell){
-                if(!Objects.equals(cell.getRepresentation(), "|   ")){
+                if(Objects.equals(cell.getRepresentation(), "|   ")){
                     return false;
                 }
             }
@@ -184,7 +178,6 @@ public class TicTacToe {
             if(Objects.equals(this.tabCell[i][(Math.abs(i-(this.size-1)))].getRepresentation(), player.getRepresentation())){
                 cellCount2+=1;
             }
-
         }
         return (cellCount1 == this.size | cellCount2 == this.size);
     }
