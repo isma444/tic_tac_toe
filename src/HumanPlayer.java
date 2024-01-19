@@ -2,10 +2,10 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player{
 
-    String representation;
+    private String representation;
 
-    HumanPlayer(String symbole) {
-        this.representation = "| "+ symbole +" ";
+    HumanPlayer(String symbole){
+        super(symbole);
     }
 
 

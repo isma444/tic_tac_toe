@@ -2,7 +2,7 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.Scanner;
 
-public abstract class InteractionUtilisateur {
+public class InteractionUtilisateur {
 
 
     public String recoverSymbol(){
@@ -31,7 +31,7 @@ public abstract class InteractionUtilisateur {
         }
 
     };
-
+    //refaire le trajet de capture de case
     protected Player chosePlayers( int playerNumber, TicTacToe game ){
         System.out.println("taper 'ia' pour que l'ordi joue player"+playerNumber+" sinon taper entrer");
         Scanner scanner = new Scanner(System.in);

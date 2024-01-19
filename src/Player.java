@@ -2,11 +2,14 @@ import com.sun.net.httpserver.Authenticator;
 
 import java.util.Scanner;
 
-public class Player extends InteractionUtilisateur {
+public class Player {
 
     protected TicTacToe game ;
-    private String representation ;
+    protected String representation ;
 
+    Player(String symbole){
+        this.representation = "| "+ symbole +" ";
+    }
     public String getRepresentation(){
         return this.representation;
     }
@@ -17,8 +20,8 @@ public class Player extends InteractionUtilisateur {
 
         int[] coordonnees = new int[2];
 
-        coordonnees[0] = this.recoverInput("lignes", game);
-        coordonnees[1] = this.recoverInput("colonnes", game);
+        coordonnees[0] = new InteractionUtilisateur().recoverInput("lignes", game);
+        coordonnees[1] = new InteractionUtilisateur().recoverInput("colonnes", game);
 
         return coordonnees;
     }

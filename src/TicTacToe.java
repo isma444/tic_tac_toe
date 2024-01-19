@@ -1,6 +1,6 @@
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Scanner;
+
 
 public class TicTacToe {
 
@@ -18,8 +18,8 @@ public class TicTacToe {
 
         this.size = size;
         this.tabCell = new Cell[size][size];
-        this.firstPlayer = new Player().chosePlayers( 1, this);
-        this.secondPlayer = new Player().chosePlayers( 2, this);
+        this.firstPlayer = new InteractionUtilisateur().chosePlayers( 1, this);
+        this.secondPlayer = new InteractionUtilisateur().chosePlayers( 2, this);
         for (Cell[] rowCell : this.tabCell) {
             for (int i = 0; i < rowCell.length; i++) {
                 rowCell[i] = new Cell();
@@ -55,7 +55,7 @@ public class TicTacToe {
         }
     }
 
-    public void display() {
+    public void display(TicTacToe game) {
 
         for (Cell[] rowCell : this.tabCell) {
             System.out.println();
