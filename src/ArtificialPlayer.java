@@ -1,11 +1,8 @@
 import java.util.Random;
-import java.util.Scanner;
-
 public class ArtificialPlayer extends Player{
 
-    String representation;
-    ArtificialPlayer(String symbole ) {
-        super(symbole);
+    ArtificialPlayer() {
+        super();
     }
 //TODO regle le probleme probleme !!
 

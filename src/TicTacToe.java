@@ -1,14 +1,14 @@
-import java.util.Arrays;
 import java.util.Objects;
-
 
 public class TicTacToe {
 
+  private View view;
   private int size;
   private Cell[][] tabCell = new Cell[3][3];
-
-   private Player firstPlayer ;
-   private Player secondPlayer;
+  
+  private InteractionUtilisateur interaction;
+  private Player firstPlayer ;
+  private Player secondPlayer;
 
     public Cell[][] getTabCell() {
         return tabCell;
@@ -19,11 +19,13 @@ public class TicTacToe {
     }
 
     TicTacToe(int size) {
-
+    
         this.size = size;
         this.tabCell = new Cell[size][size];
-        this.firstPlayer = new InteractionUtilisateur().chosePlayers( 1, this);
-        this.secondPlayer = new InteractionUtilisateur().chosePlayers( 2, this);
+        this.view = new View();
+        this.interaction = new InteractionUtilisateur();
+        this.firstPlayer = this.interaction.chosePlayers( 1, this);
+        this.secondPlayer = this.interaction.chosePlayers( 2, this);
         for (Cell[] rowCell : this.tabCell) {
             for (int i = 0; i < rowCell.length; i++) {
                 rowCell[i] = new Cell();
@@ -42,7 +44,7 @@ public class TicTacToe {
             this.setOwner(player);
             this.display();
             if(isOver(player)){
-                new View().showMessage("fini");
+                this.view.showMessage("fini");
                 break;
             }
         }
@@ -50,16 +52,16 @@ public class TicTacToe {
     private Player switchPlayer(int iterator){
 
         if(iterator%2 == 0){
-            new View().showMessage("au tour du premier joueur");
+            this.view.showMessage("au tour du premier joueur");
             return this.firstPlayer;
         }else{
-            new View().showMessage("au tour du second joueur");
+            this.view.showMessage("au tour du second joueur");
             return this.secondPlayer;
         }
     }
     public void display() {
 
-        new View().showTitactoe(this);
+        this.view.showTitactoe(this);
     }
 
     public int[] getMoveFromPlayer(Player player) {
@@ -70,13 +72,13 @@ public class TicTacToe {
 
 
         while (!(numbers[0] < this.size) | !(numbers[1] < this.size)) { // verifie que les deux nombre ne soit pas plus grand que 3
-            new View().showMessage("position incorrect ! position correct entre 0 et 2");
+            this.view.showMessage("position incorrect ! position correct entre 0 et 2");
             numbers = player.chosenCoord(this);
         }
         Cell chosenCell = this.tabCell[numbers[0]][numbers[1]];// recupere la cellule indiqué par les coordonnees
         while (!(chosenCell.getRepresentation().equals("|   "))) {
-            new View().showMessage("case deja prise ! recommence");
-            new View().showMessage("case deja prise ! recommence");
+            this.view.showMessage("case deja prise ! recommence");
+            this.view.showMessage("case deja prise ! recommence");
             numbers = player.chosenCoord(this);
             chosenCell = this.tabCell[numbers[0]][numbers[1]];
         }
@@ -101,8 +103,14 @@ public class TicTacToe {
      */
     public boolean isOver(Player player) {
         if(this.checkRow(player) | this.checkColumns(player) | this.checkDiagonal(player) ){
+            this.view.showMessage(player.getName()+" win !");
             return true;
-        } else return checkTabCell();
+        } else {
+            if(checkTabCell()){
+                this.view.showMessage("Vous êtes tout les deux mauvais ...");
+            }
+            return checkTabCell();
+        }
     }
 
     /**

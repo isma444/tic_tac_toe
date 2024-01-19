@@ -1,14 +1,17 @@
-import com.sun.net.httpserver.Authenticator;
-
-import java.util.Scanner;
-
 public class Player {
 
-    protected TicTacToe game ;
     protected String representation ;
+    protected String name;
 
-    Player(String symbole){
-        this.representation = "| "+ symbole +" ";
+    protected InteractionUtilisateur interaction;
+
+    public String getName(){
+        return this.name;
+    }
+    Player(){
+        this.interaction = new InteractionUtilisateur();
+        this.name = this.interaction.chosePlayerName();
+        this.representation = "| "+ this.interaction.recoverSymbol() +" ";
     }
     public String getRepresentation(){
         return this.representation;
