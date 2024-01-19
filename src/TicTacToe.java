@@ -10,7 +10,11 @@ public class TicTacToe {
    private Player firstPlayer ;
    private Player secondPlayer;
 
-   public int getSize(){
+    public Cell[][] getTabCell() {
+        return tabCell;
+    }
+
+    public int getSize(){
        return this.size;
     }
 
@@ -34,56 +38,45 @@ public class TicTacToe {
 
         for (int i = 0; i < this.size*this.size; ++i) {
 
-
-            if (i % 2 == 0) {
-                player = this.firstPlayer;
-                System.out.println("au tour du premier joueur");
-                this.setOwner(player);
-
-
-            } else {
-                player = this.secondPlayer;
-                System.out.println("au tour du second joueur");
-                this.setOwner(player);
-
-            }
+            player = this.switchPlayer(i);
+            this.setOwner(player);
             this.display();
             if(isOver(player)){
-                System.out.println("fini");
+                new View().showMessage("fini");
                 break;
             }
         }
     }
+    private Player switchPlayer(int iterator){
 
-    public void display(TicTacToe game) {
-
-        for (Cell[] rowCell : this.tabCell) {
-            System.out.println();
-            System.out.println("-------------");
-            for (Cell cell : rowCell) {
-
-                System.out.print(cell.getRepresentation());
-            }
-            System.out.print("|");
+        if(iterator%2 == 0){
+            new View().showMessage("au tour du premier joueur");
+            return this.firstPlayer;
+        }else{
+            new View().showMessage("au tour du second joueur");
+            return this.secondPlayer;
         }
-        System.out.println();
-        System.out.println("-------------");
+    }
+    public void display() {
+
+        new View().showTitactoe(this);
     }
 
     public int[] getMoveFromPlayer(Player player) {
 
 
-       // TODO: check semantic
+
         int[] numbers = player.chosenCoord(this); // appeller la method qui retourne les chiffre saisie
 
 
         while (!(numbers[0] < this.size) | !(numbers[1] < this.size)) { // verifie que les deux nombre ne soit pas plus grand que 3
-            System.out.println("position incorrect ! position correct entre 0 et 2");
+            new View().showMessage("position incorrect ! position correct entre 0 et 2");
             numbers = player.chosenCoord(this);
         }
         Cell chosenCell = this.tabCell[numbers[0]][numbers[1]];// recupere la cellule indiqué par les coordonnees
         while (!(chosenCell.getRepresentation().equals("|   "))) {
-            System.out.println("case deja prise ! recommence");
+            new View().showMessage("case deja prise ! recommence");
+            new View().showMessage("case deja prise ! recommence");
             numbers = player.chosenCoord(this);
             chosenCell = this.tabCell[numbers[0]][numbers[1]];
         }
